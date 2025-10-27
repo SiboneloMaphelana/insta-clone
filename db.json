@@ -1,0 +1,394 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Lionel Messi",
+      "username": "lmessi10",
+      "email": "messi@example.com",
+      "password": "messi123",
+      "profileImage": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400",
+      "bio": "Living my best life on and off the field",
+      "following": [2, 3, 5],
+      "followers": [2, 3, 4, 5, 6]
+    },
+    {
+      "id": 2,
+      "name": "Cristiano Ronaldo",
+      "username": "cr7",
+      "email": "ronaldo@example.com",
+      "password": "cr7forever",
+      "profileImage": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400",
+      "bio": "Siuuuu! Working hard every day",
+      "following": [1, 4, 6],
+      "followers": [1, 3, 4, 5]
+    },
+    {
+      "id": 3,
+      "name": "Neymar Jr",
+      "username": "neymarjr",
+      "email": "neymar@example.com",
+      "password": "neymar10",
+      "profileImage": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
+      "bio": "Football is my passion 🔥⚽",
+      "following": [1, 2, 4],
+      "followers": [1, 2, 5, 6]
+    },
+    {
+      "id": 4,
+      "name": "Kylian Mbappé",
+      "username": "kmbappe",
+      "email": "mbappe@example.com",
+      "password": "mbappe7",
+      "profileImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+      "bio": "Speed and goals ⚡",
+      "following": [1, 2, 3, 5, 6],
+      "followers": [1, 2, 3]
+    },
+    {
+      "id": 5,
+      "name": "Erling Haaland",
+      "username": "erlinghaaland",
+      "email": "haaland@example.com",
+      "password": "haaland9",
+      "profileImage": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400",
+      "bio": "Goal machine 🤖⚽",
+      "following": [1, 3, 4],
+      "followers": [1, 2, 3, 4, 6]
+    },
+    {
+      "id": 6,
+      "name": "Kevin De Bruyne",
+      "username": "kevindebruyne",
+      "email": "debruyne@example.com",
+      "password": "kdb17",
+      "profileImage": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400",
+      "bio": "Assists and vision 👁️",
+      "following": [1, 2, 4, 5],
+      "followers": [2, 3, 4]
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "userId": 1,
+      "caption": "Great training session today! 💪⚽",
+      "imageUrl": "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=800",
+      "likes": 15234,
+      "timestamp": "2025-10-27T08:30:00Z",
+      "comments": [1, 2]
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "caption": "Beautiful sunset after the match 🌅",
+      "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
+      "likes": 18956,
+      "timestamp": "2025-10-26T19:45:00Z",
+      "comments": [3]
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "caption": "Never stop working! 💯",
+      "imageUrl": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800",
+      "likes": 21045,
+      "timestamp": "2025-10-27T07:15:00Z",
+      "comments": [4, 5]
+    },
+    {
+      "id": 4,
+      "userId": 2,
+      "caption": "Game day ready! Siuuuu! ⚽🔥",
+      "imageUrl": "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800",
+      "likes": 25678,
+      "timestamp": "2025-10-25T14:20:00Z",
+      "comments": []
+    },
+    {
+      "id": 5,
+      "userId": 3,
+      "caption": "Living the dream! 🎯✨",
+      "imageUrl": "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=800",
+      "likes": 19234,
+      "timestamp": "2025-10-27T10:00:00Z",
+      "comments": [6]
+    },
+    {
+      "id": 6,
+      "userId": 3,
+      "caption": "Best fans in the world! 🙌❤️",
+      "imageUrl": "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800",
+      "likes": 17890,
+      "timestamp": "2025-10-26T16:30:00Z",
+      "comments": [7, 8]
+    },
+    {
+      "id": 7,
+      "userId": 4,
+      "caption": "Speed is my superpower ⚡💨",
+      "imageUrl": "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800",
+      "likes": 22456,
+      "timestamp": "2025-10-27T09:45:00Z",
+      "comments": [9]
+    },
+    {
+      "id": 8,
+      "userId": 4,
+      "caption": "Another victory! 🏆🎉",
+      "imageUrl": "https://images.unsplash.com/photo-1504805572947-34fad45aed93?w=800",
+      "likes": 20123,
+      "timestamp": "2025-10-24T20:00:00Z",
+      "comments": [10, 11]
+    },
+    {
+      "id": 9,
+      "userId": 5,
+      "caption": "Goals, goals, goals! 🎯⚽",
+      "imageUrl": "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=800",
+      "likes": 23567,
+      "timestamp": "2025-10-27T11:20:00Z",
+      "comments": [12]
+    },
+    {
+      "id": 10,
+      "userId": 5,
+      "caption": "Recovery day 💆‍♂️💪",
+      "imageUrl": "https://images.unsplash.com/photo-1540553016722-983e48a2cd10?w=800",
+      "likes": 16789,
+      "timestamp": "2025-10-25T15:30:00Z",
+      "comments": []
+    },
+    {
+      "id": 11,
+      "userId": 6,
+      "caption": "Perfect assist today! 🎯👌",
+      "imageUrl": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800",
+      "likes": 18234,
+      "timestamp": "2025-10-27T13:00:00Z",
+      "comments": [13, 14]
+    },
+    {
+      "id": 12,
+      "userId": 6,
+      "caption": "Family time is the best time 👨‍👩‍👧‍👦❤️",
+      "imageUrl": "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800",
+      "likes": 15678,
+      "timestamp": "2025-10-26T18:15:00Z",
+      "comments": [15]
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "postId": 1,
+      "userId": 2,
+      "text": "Keep it up legend! 💪",
+      "timestamp": "2025-10-27T08:45:00Z"
+    },
+    {
+      "id": 2,
+      "postId": 1,
+      "userId": 3,
+      "text": "Amazing work! 🔥",
+      "timestamp": "2025-10-27T09:00:00Z"
+    },
+    {
+      "id": 3,
+      "postId": 2,
+      "userId": 5,
+      "text": "Beautiful shot! 📸",
+      "timestamp": "2025-10-26T20:00:00Z"
+    },
+    {
+      "id": 4,
+      "postId": 3,
+      "userId": 1,
+      "text": "That's the spirit! 💯",
+      "timestamp": "2025-10-27T07:30:00Z"
+    },
+    {
+      "id": 5,
+      "postId": 3,
+      "userId": 4,
+      "text": "Inspiration right here! 🙌",
+      "timestamp": "2025-10-27T08:00:00Z"
+    },
+    {
+      "id": 6,
+      "postId": 5,
+      "userId": 2,
+      "text": "Living it! 🌟",
+      "timestamp": "2025-10-27T10:30:00Z"
+    },
+    {
+      "id": 7,
+      "postId": 6,
+      "userId": 1,
+      "text": "They love you! ❤️",
+      "timestamp": "2025-10-26T17:00:00Z"
+    },
+    {
+      "id": 8,
+      "postId": 6,
+      "userId": 4,
+      "text": "True connection! 🙌",
+      "timestamp": "2025-10-26T17:30:00Z"
+    },
+    {
+      "id": 9,
+      "postId": 7,
+      "userId": 3,
+      "text": "Fastest in the game! ⚡",
+      "timestamp": "2025-10-27T10:00:00Z"
+    },
+    {
+      "id": 10,
+      "postId": 8,
+      "userId": 1,
+      "text": "Well deserved! 🏆",
+      "timestamp": "2025-10-24T20:30:00Z"
+    },
+    {
+      "id": 11,
+      "postId": 8,
+      "userId": 5,
+      "text": "Congratulations! 🎉",
+      "timestamp": "2025-10-24T21:00:00Z"
+    },
+    {
+      "id": 12,
+      "postId": 9,
+      "userId": 6,
+      "text": "Unstoppable! 🤖",
+      "timestamp": "2025-10-27T11:45:00Z"
+    },
+    {
+      "id": 13,
+      "postId": 11,
+      "userId": 2,
+      "text": "What a pass! 👏",
+      "timestamp": "2025-10-27T13:30:00Z"
+    },
+    {
+      "id": 14,
+      "postId": 11,
+      "userId": 4,
+      "text": "Vision 100! 👁️",
+      "timestamp": "2025-10-27T14:00:00Z"
+    },
+    {
+      "id": 15,
+      "postId": 12,
+      "userId": 3,
+      "text": "Family first! ❤️",
+      "timestamp": "2025-10-26T19:00:00Z"
+    }
+  ],
+  "follows": [
+    {
+      "id": 1,
+      "followerId": 1,
+      "followingId": 2
+    },
+    {
+      "id": 2,
+      "followerId": 1,
+      "followingId": 3
+    },
+    {
+      "id": 3,
+      "followerId": 1,
+      "followingId": 5
+    },
+    {
+      "id": 4,
+      "followerId": 2,
+      "followingId": 1
+    },
+    {
+      "id": 5,
+      "followerId": 2,
+      "followingId": 4
+    },
+    {
+      "id": 6,
+      "followerId": 2,
+      "followingId": 6
+    },
+    {
+      "id": 7,
+      "followerId": 3,
+      "followingId": 1
+    },
+    {
+      "id": 8,
+      "followerId": 3,
+      "followingId": 2
+    },
+    {
+      "id": 9,
+      "followerId": 3,
+      "followingId": 4
+    },
+    {
+      "id": 10,
+      "followerId": 4,
+      "followingId": 1
+    },
+    {
+      "id": 11,
+      "followerId": 4,
+      "followingId": 2
+    },
+    {
+      "id": 12,
+      "followerId": 4,
+      "followingId": 3
+    },
+    {
+      "id": 13,
+      "followerId": 4,
+      "followingId": 5
+    },
+    {
+      "id": 14,
+      "followerId": 4,
+      "followingId": 6
+    },
+    {
+      "id": 15,
+      "followerId": 5,
+      "followingId": 1
+    },
+    {
+      "id": 16,
+      "followerId": 5,
+      "followingId": 3
+    },
+    {
+      "id": 17,
+      "followerId": 5,
+      "followingId": 4
+    },
+    {
+      "id": 18,
+      "followerId": 6,
+      "followingId": 1
+    },
+    {
+      "id": 19,
+      "followerId": 6,
+      "followingId": 2
+    },
+    {
+      "id": 20,
+      "followerId": 6,
+      "followingId": 4
+    },
+    {
+      "id": 21,
+      "followerId": 6,
+      "followingId": 5
+    }
+  ]
+}

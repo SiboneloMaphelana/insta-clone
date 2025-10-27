@@ -1,5 +1,5 @@
 <div class="container">
-  <form class="register" [formGroup]="registerForm" (ngSubmit)="registerUser()">
+  <form class="register" [formGroup]="registerForm">
     <label for="name">
       Name
       <input type="text" id="name" formControlName="name" />
@@ -13,6 +13,9 @@
     <label for="password">
       Password
       <input type="password" id="password" formControlName="password" />
+    </label>
+    <label for="confirm-password">Confirm Password 
+        <input type="password" name="confirm-password" id="confirm-password" formControlName="confirm-password">
     </label>
 
     <button type="submit">Create Account</button>

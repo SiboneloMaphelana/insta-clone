@@ -6,10 +6,11 @@ import {
   RouterOutlet,
   Routes,
 } from '@angular/router';
-import { RegisterComponent } from './register/register.component';
-import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
-import { CreatePostComponent } from './create-post/create-post.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import { HomeComponent } from './components/home/home.component';
+import { CreatePostComponent } from './components/create-post/create-post.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'create-post',
     component: CreatePostComponent,
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
   },
 ];
 

@@ -1,8 +1,8 @@
 <div class="container">
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+  <form [formGroup]="loginForm" class="login">
     <label for="email"
       >Email
-      <input type="email" name="email" id="email" formControlName="password" />
+      <input type="email" name="email" id="email" formControlName="email" />
     </label>
     <label for="password"
       >Password
