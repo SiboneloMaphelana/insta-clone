@@ -1,0 +1,31 @@
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.title {
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #333;
+}
+
+.post {
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.post-content {
+  padding: 0;
+}

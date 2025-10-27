@@ -1,0 +1,23 @@
+<main class="container">
+  <div class="create-post-card">
+    <h2 class="title">Create New Post</h2>
+
+    <form>
+      <div>
+        <label for="caption" class="form-label">Caption</label>
+        <textarea
+          id="caption"
+          name="caption"
+          rows="4"
+          placeholder="Write a caption for your post..."
+          maxlength="500"
+        ></textarea>
+      </div>
+
+      <div class="buttons">
+        <a routerLink="/home" class="btn cancel">Cancel</a>
+        <button type="submit" class="btn submit">Share Post</button>
+      </div>
+    </form>
+  </div>
+</main>

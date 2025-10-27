@@ -1,0 +1,38 @@
+.create-post-card {
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 4px black;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+title {
+  margin-bottom: 25px;
+  font-size: 24px;
+}
+
+form {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
