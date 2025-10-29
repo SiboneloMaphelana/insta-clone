@@ -1,19 +1,43 @@
 <div class="container">
-  <form [formGroup]="loginForm" class="login">
-    <label for="email"
-      >Email
-      <input type="email" name="email" id="email" formControlName="email" />
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login">
+    <h2>Login</h2>
+    
+    <label for="email">
+      Email
+      <input 
+        type="email" 
+        name="email" 
+        id="email" 
+        formControlName="email"
+        [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+      />
+      <span class="error-message" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+        Please enter a valid email
+      </span>
     </label>
-    <label for="password"
-      >Password
+
+    <label for="password">
+      Password
       <input
         type="password"
         name="password"
         id="password"
         formControlName="password"
+        [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
       />
+      <span class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        Password must be at least 6 characters
+      </span>
     </label>
-    <button type="submit">Login</button>
+
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <button type="submit" [disabled]="isLoading">
+      {{ isLoading ? 'Logging in...' : 'Login' }}
+    </button>
+
     <p>New to app?</p>
     <a routerLink="/register">Register here</a>
   </form>
