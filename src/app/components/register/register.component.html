@@ -1,62 +1,74 @@
-<div class="container">
-  <form class="register" [formGroup]="registerForm" (ngSubmit)="onRegister()">
-    <h2>Create Account</h2>
+<div class="auth-page">
+  <form class="auth-card" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <h2 class="auth-card-title">
+      Join the vibe
+      <iconify-icon
+        icon="mdi:party-popper"
+        class="auth-title-icon"
+        aria-hidden="true"
+      ></iconify-icon>
+    </h2>
 
     <label for="name">
       Name
-      <input 
-        type="text" 
-        id="name" 
+      <input
+        type="text"
+        id="name"
         formControlName="name"
-        [class.error]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+        autocomplete="name"
+        (input)="clearFeedback()"
+        [class.error]="!!nameErrorMessage"
       />
-      <span class="error-message" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
-        <span *ngIf="registerForm.get('name')?.errors?.['required']">Name is required</span>
-        <span *ngIf="registerForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</span>
+      <span class="error-message" *ngIf="nameErrorMessage">
+        {{ nameErrorMessage }}
       </span>
     </label>
 
     <label for="email">
       Email
-      <input 
-        type="email" 
-        id="email" 
+      <input
+        type="email"
+        id="email"
         formControlName="email"
-        [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        autocomplete="email"
+        (input)="clearFeedback()"
+        [class.error]="!!emailErrorMessage"
       />
-      <span class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-        <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</span>
-        <span *ngIf="registerForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+      <span class="error-message" *ngIf="emailErrorMessage">
+        {{ emailErrorMessage }}
       </span>
     </label>
 
     <label for="password">
       Password
-      <input 
-        type="password" 
-        id="password" 
+      <input
+        type="password"
+        id="password"
         formControlName="password"
-        [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+        autocomplete="new-password"
+        (input)="clearFeedback()"
+        [class.error]="!!passwordErrorMessage"
       />
-      <span class="error-message" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-        <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</span>
-        <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+      <span class="field-note">
+        Use at least 8 characters with letters and numbers.
+      </span>
+      <span class="error-message" *ngIf="passwordErrorMessage">
+        {{ passwordErrorMessage }}
       </span>
     </label>
 
     <label for="confirm-password">
-      Confirm Password 
-      <input 
-        type="password" 
-        id="confirm-password" 
+      Confirm Password
+      <input
+        type="password"
+        id="confirm-password"
         formControlName="confirmPassword"
-        [class.error]="(registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) || passwordMismatch"
+        autocomplete="new-password"
+        (input)="clearFeedback()"
+        [class.error]="!!confirmPasswordErrorMessage"
       />
-      <span class="error-message" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
-        <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Please confirm your password</span>
-      </span>
-      <span class="error-message" *ngIf="passwordMismatch">
-        Passwords do not match
+      <span class="error-message" *ngIf="confirmPasswordErrorMessage">
+        {{ confirmPasswordErrorMessage }}
       </span>
     </label>
 
@@ -69,9 +81,9 @@
     </div>
 
     <button type="submit" [disabled]="isLoading">
-      {{ isLoading ? 'Creating Account...' : 'Create Account' }}
+      {{ isLoading ? 'Creating your account...' : 'Sign me up' }}
     </button>
 
-    <p>Already registered? <a routerLink="/login">Login here</a></p>
+    <p>Already in? <a routerLink="/login">Log in</a></p>
   </form>
 </div>

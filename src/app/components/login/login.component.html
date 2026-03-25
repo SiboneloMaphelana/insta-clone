@@ -1,18 +1,31 @@
-<div class="container">
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login">
-    <h2>Login</h2>
-    
+<div class="auth-page">
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-card">
+    <h2 class="auth-card-title">
+      Hey, welcome back
+      <iconify-icon
+        icon="mdi:sparkles"
+        class="auth-title-icon"
+        aria-hidden="true"
+      ></iconify-icon>
+    </h2>
+
+    <p class="info-message" *ngIf="infoMessage">
+      {{ infoMessage }}
+    </p>
+
     <label for="email">
       Email
-      <input 
-        type="email" 
-        name="email" 
-        id="email" 
+      <input
+        type="email"
+        name="email"
+        id="email"
         formControlName="email"
-        [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+        autocomplete="email"
+        (input)="clearFeedback()"
+        [class.error]="!!emailErrorMessage"
       />
-      <span class="error-message" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-        Please enter a valid email
+      <span class="error-message" *ngIf="emailErrorMessage">
+        {{ emailErrorMessage }}
       </span>
     </label>
 
@@ -23,10 +36,12 @@
         name="password"
         id="password"
         formControlName="password"
-        [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+        autocomplete="current-password"
+        (input)="clearFeedback()"
+        [class.error]="!!passwordErrorMessage"
       />
-      <span class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-        Password must be at least 6 characters
+      <span class="error-message" *ngIf="passwordErrorMessage">
+        {{ passwordErrorMessage }}
       </span>
     </label>
 
@@ -35,10 +50,17 @@
     </div>
 
     <button type="submit" [disabled]="isLoading">
-      {{ isLoading ? 'Logging in...' : 'Login' }}
+      {{ isLoading ? 'Logging you in...' : "Let's go" }}
     </button>
 
-    <p>New to app?</p>
-    <a routerLink="/register">Register here</a>
+    <p>New here?</p>
+    <a routerLink="/register">
+      Create an account
+      <iconify-icon
+        icon="mdi:arrow-right"
+        class="auth-link-icon"
+        aria-hidden="true"
+      ></iconify-icon>
+    </a>
   </form>
 </div>

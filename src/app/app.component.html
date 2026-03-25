@@ -1,12 +1,29 @@
-<nav class="navbar">
-  <div class="nav-container">
-    <h1 class="logo">Insta Clone</h1>
-    <ul class="nav-links">
-      <li><a routerLink="/home" class="active">Home</a></li>
-      <li><a routerLink="/profile">Profile</a></li>
-      <li><a routerLink="/create-post">Create Post</a></li>
-      <li><a routerLink="/logout">Logout</a></li>
-    </ul>
+<header class="shell-nav" *ngIf="auth.isLoggedIn()">
+  <div class="shell-inner">
+    <a routerLink="/home" class="brand" aria-label="Hanami home">Hanami</a>
+    <nav class="shell-links" aria-label="Main navigation">
+      <a routerLink="/home" routerLinkActive="active">Home</a>
+      <a routerLink="/explore" routerLinkActive="active">Explore</a>
+      <a routerLink="/create-post" routerLinkActive="active">Create</a>
+      <a routerLink="/profile" routerLinkActive="active">Profile</a>
+    </nav>
+    <div class="shell-actions">
+      <button
+        type="button"
+        class="ghost-btn"
+        (click)="toggleTheme()"
+        [attr.aria-label]="
+          isDark() ? 'Switch to light theme' : 'Switch to dark theme'
+        "
+      >
+        {{ isDark() ? 'Light mode' : 'Dark mode' }}
+      </button>
+      <button type="button" class="ghost-btn logout" (click)="logout()">
+        Log out
+      </button>
+    </div>
   </div>
-</nav>
-<router-outlet></router-outlet>
+</header>
+<main class="shell-main">
+  <router-outlet></router-outlet>
+</main>

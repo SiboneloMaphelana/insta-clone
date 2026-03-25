@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { trimmedRequiredValidator } from '../../core/form-validators';
 
 @Component({
   selector: 'app-login',
@@ -9,53 +10,120 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  loginForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+  readonly loginForm = this.fb.nonNullable.group({
+    email: ['', [trimmedRequiredValidator, Validators.email]],
+    password: ['', [trimmedRequiredValidator, Validators.minLength(6)]],
   });
 
   errorMessage = '';
+  infoMessage = '';
   isLoading = false;
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     if (this.auth.isLoggedIn()) {
       this.router.navigate(['/home']);
-    }
-  }
-
-  onLogin() {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      this.errorMessage = 'Please fill in all fields correctly';
       return;
     }
 
-    const email = this.loginForm.value.email || '';
-    const password = this.loginForm.value.password || '';
+    if (this.route.snapshot.queryParamMap.get('registered')) {
+      this.infoMessage = 'Your account is ready. Log in with your new details.';
+      return;
+    }
+
+    if (this.route.snapshot.queryParamMap.get('loggedOut')) {
+      this.infoMessage = 'You have been logged out safely.';
+      return;
+    }
+
+    if (this.route.snapshot.queryParamMap.get('returnUrl')) {
+      this.infoMessage = 'Please log in to continue.';
+    }
+  }
+
+  get emailErrorMessage(): string {
+    const control = this.loginForm.controls.email;
+
+    if (!control.touched) {
+      return '';
+    }
+
+    if (control.hasError('required')) {
+      return 'Enter the email address linked to your account.';
+    }
+
+    if (control.hasError('email')) {
+      return 'Use a valid email address, for example name@example.com.';
+    }
+
+    return '';
+  }
+
+  get passwordErrorMessage(): string {
+    const control = this.loginForm.controls.password;
+
+    if (!control.touched) {
+      return '';
+    }
+
+    if (control.hasError('required')) {
+      return 'Enter your password to continue.';
+    }
+
+    if (control.hasError('minlength')) {
+      return 'Passwords must be at least 6 characters long.';
+    }
+
+    return '';
+  }
+
+  onLogin(): void {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      this.errorMessage = 'Please fix the highlighted fields before continuing.';
+      return;
+    }
+
+    const { email, password } = this.loginForm.getRawValue();
 
     this.isLoading = true;
     this.errorMessage = '';
 
     this.auth.login(email, password).subscribe({
-      next: (success) => {
+      next: (result) => {
         this.isLoading = false;
-        if (success) {
-          this.router.navigate(['/home']);
-        } else {
-          this.errorMessage = 'Invalid email or password';
+
+        if (result.success) {
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          const safeReturnUrl =
+            !!returnUrl &&
+            returnUrl.startsWith('/') &&
+            !returnUrl.startsWith('//');
+
+          this.router.navigateByUrl(safeReturnUrl ? returnUrl : '/home');
+          return;
         }
+
+        this.errorMessage = result.message;
       },
-      error: (error) => {
+      error: () => {
         this.isLoading = false;
-        this.errorMessage = 'An error occurred. Please try again.';
-        console.error('Login error:', error);
-      }
+        this.errorMessage = 'We could not log you in right now. Please try again.';
+      },
     });
   }
 
-  goToRegister() {
+  clearFeedback(): void {
+    this.errorMessage = '';
+  }
+
+  goToRegister(): void {
     this.router.navigate(['/register']);
   }
 }

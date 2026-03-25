@@ -1,22 +1,76 @@
-<main class="container">
+<main class="create-wrap">
   <div class="create-post-card">
-    <h2 class="title">Create New Post</h2>
+    <h2 class="title">Create new post</h2>
+    <p class="hint">
+      Paste an image URL and a caption. Your post will be saved to the local JSON
+      server that powers this demo.
+    </p>
 
-    <form>
-      <div>
-        <label for="caption" class="form-label">Caption</label>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="imageUrl" class="label">Image URL</label>
+        <input
+          id="imageUrl"
+          type="url"
+          class="input"
+          formControlName="imageUrl"
+          placeholder="https://images.unsplash.com/photo-..."
+          autocomplete="off"
+          (input)="onImageUrlInput()"
+        />
+        <p class="err" *ngIf="imageUrlErrorMessage">
+          {{ imageUrlErrorMessage }}
+        </p>
+      </div>
+
+      <section class="preview-card" *ngIf="previewUrl">
+        <p class="preview-label">Preview</p>
+        <div class="preview-media" [class.preview-media-error]="previewState === 'error'">
+          <img
+            *ngIf="previewState !== 'error'"
+            [src]="previewUrl"
+            [alt]="form.controls.caption.value || 'Post preview'"
+            (load)="onPreviewLoad()"
+            (error)="onPreviewError()"
+          />
+          <div class="preview-empty" *ngIf="previewState === 'error'">
+            We could not preview this image.
+          </div>
+        </div>
+        <p class="preview-note" *ngIf="previewState === 'loading'">
+          Checking your image...
+        </p>
+        <p class="err" *ngIf="previewState === 'error'">
+          Double-check the link and make sure the host allows image loading.
+        </p>
+      </section>
+
+      <div class="field">
+        <div class="caption-head">
+          <label for="caption" class="label">Caption</label>
+          <span class="char-count">{{ captionLength }}/2200</span>
+        </div>
         <textarea
           id="caption"
-          name="caption"
-          rows="4"
-          placeholder="Write a caption for your post..."
-          maxlength="500"
+          class="textarea"
+          formControlName="caption"
+          rows="5"
+          placeholder="Write a caption..."
+          maxlength="2200"
+          (input)="onCaptionInput()"
         ></textarea>
+        <p class="err" *ngIf="captionErrorMessage">
+          {{ captionErrorMessage }}
+        </p>
       </div>
+
+      <p class="form-err" *ngIf="error">{{ error }}</p>
 
       <div class="buttons">
         <a routerLink="/home" class="btn cancel">Cancel</a>
-        <button type="submit" class="btn submit">Share Post</button>
+        <button type="submit" class="btn submit" [disabled]="submitting">
+          {{ submitting ? 'Sharing...' : 'Share' }}
+        </button>
       </div>
     </form>
   </div>

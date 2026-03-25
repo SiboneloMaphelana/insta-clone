@@ -1,0 +1,43 @@
+<div class="explore-wrap">
+  <header class="explore-head">
+    <h1 class="explore-title">Explore</h1>
+    <p class="explore-sub">Search every post and creator in the network.</p>
+    <label class="sr-only" for="explore-q">Search posts</label>
+    <input
+      id="explore-q"
+      class="explore-search"
+      type="search"
+      [(ngModel)]="query"
+      placeholder="Search by caption, name, or @username"
+      autocomplete="off"
+    />
+  </header>
+
+  <p class="state" *ngIf="loading">Loading discovery...</p>
+
+  <div class="state-wrap" *ngIf="!loading && error">
+    <p class="state state-err">{{ error }}</p>
+    <button type="button" class="state-action" (click)="retryLoad()">
+      Try again
+    </button>
+  </div>
+
+  <div class="mosaic" *ngIf="!loading && !error && filtered.length">
+    <a
+      class="tile"
+      *ngFor="let post of filtered"
+      [routerLink]="profileLink(post)"
+      [title]="post.caption"
+    >
+      <img [src]="post.imageUrl" [alt]="post.caption" loading="lazy" />
+      <div class="tile-meta">
+        <span class="tile-user">@{{ author(post)?.username ?? 'unknown' }}</span>
+        <span class="tile-likes">{{ post.likes | number }} likes</span>
+      </div>
+    </a>
+  </div>
+
+  <p class="state" *ngIf="!loading && !error && filtered.length === 0">
+    {{ emptyStateMessage }}
+  </p>
+</div>

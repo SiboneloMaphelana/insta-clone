@@ -1,150 +1,204 @@
-<h2 class="page-title">Your Feed</h2>
-
-<div class="page-content">
-  <main class="feed-grid">
-    <div class="post">
-      <div class="post-header">
-        <img
-          src="https://via.placeholder.com/50/FF5733/FFFFFF"
-          alt="User Avatar"
-          class="avatar"
+<div class="home">
+  <div class="home-inner">
+    <section class="feed-col" aria-label="Feed">
+      <header class="feed-top">
+        <h1 class="feed-title">Your feed</h1>
+        <label class="sr-only" for="feed-search">Search your feed</label>
+        <input
+          id="feed-search"
+          class="feed-search"
+          type="search"
+          [(ngModel)]="feedQuery"
+          placeholder="Search posts, names, or @usernames"
+          autocomplete="off"
         />
-        <div class="post-info">
-          <h3 class="username">John Doe</h3>
-          <span class="post-time">2 hours ago</span>
+      </header>
+
+      <div class="stories" *ngIf="storyUsers.length && !loading">
+        <div class="stories-track">
+          <div class="story" *ngFor="let user of storyUsers">
+            <div class="story-ring">
+              <img
+                class="story-avatar"
+                [src]="avatar(user)"
+                [alt]="user.username"
+                width="56"
+                height="56"
+              />
+            </div>
+            <span class="story-name">{{ user.username }}</span>
+          </div>
         </div>
       </div>
-      <div class="post-content">
-        <img
-          src="https://via.placeholder.com/600x400/FF5733/FFFFFF"
-          alt="Post Image"
-          class="post-image"
-        />
-        <p class="post-caption">Beautiful sunset at the beach today! 🌅</p>
-      </div>
-    </div>
 
-    <div class="post">
-      <div class="post-header">
-        <img
-          src="https://via.placeholder.com/50/33FF57/FFFFFF"
-          alt="User Avatar"
-          class="avatar"
-        />
-        <div class="post-info">
-          <h3 class="username">Jane Smith</h3>
-          <span class="post-time">5 hours ago</span>
+      <p class="state" *ngIf="loading">Loading your feed...</p>
+      <div class="state-wrap" *ngIf="!loading && error">
+        <p class="state state-err">{{ error }}</p>
+        <button type="button" class="state-action" (click)="retryLoad()">
+          Try again
+        </button>
+      </div>
+
+      <p class="state" *ngIf="!loading && !error && filteredFeed.length === 0">
+        <ng-container *ngIf="feedQuery.trim(); else emptyFeed">
+          No posts match your search.
+        </ng-container>
+        <ng-template #emptyFeed>
+          Follow people to see their posts here, or
+          <a routerLink="/explore">explore</a>
+          the community.
+        </ng-template>
+      </p>
+
+      <article class="post-card" *ngFor="let row of filteredFeed">
+        <header class="post-head">
+          <a class="post-user" [routerLink]="['/profile', row.author.username]">
+            <img
+              class="avatar sm"
+              [src]="avatar(row.author)"
+              [alt]="row.author.username"
+              width="36"
+              height="36"
+            />
+            <div class="post-user-text">
+              <span class="post-username">{{ row.author.username }}</span>
+              <span class="post-time">{{ row.post.timestamp | relativeTime }}</span>
+            </div>
+          </a>
+        </header>
+
+        <div class="post-media">
+          <img [src]="row.post.imageUrl" [alt]="row.post.caption" loading="lazy" />
         </div>
-      </div>
-      <div class="post-content">
-        <img
-          src="https://via.placeholder.com/600x400/33FF57/FFFFFF"
-          alt="Post Image"
-          class="post-image"
-        />
-        <p class="post-caption">Coffee and coding ☕💻</p>
-      </div>
-    </div>
 
-    <div class="post">
-      <div class="post-header">
-        <img
-          src="https://via.placeholder.com/50/3357FF/FFFFFF"
-          alt="User Avatar"
-          class="avatar"
-        />
-        <div class="post-info">
-          <h3 class="username">Mike Johnson</h3>
-          <span class="post-time">1 day ago</span>
+        <div class="post-body">
+          <div class="post-actions">
+            <button
+              type="button"
+              class="icon-btn"
+              [class.icon-btn-active]="likedByMe(row.post)"
+              [disabled]="isLikePending(row.post.id)"
+              (click)="toggleLike(row)"
+              [attr.aria-pressed]="likedByMe(row.post)"
+              [attr.aria-busy]="isLikePending(row.post.id)"
+              aria-label="Like"
+            >
+              <iconify-icon
+                [attr.icon]="
+                  likedByMe(row.post) ? 'mdi:heart' : 'mdi:heart-outline'
+                "
+                class="icon-btn-glyph"
+                aria-hidden="true"
+              ></iconify-icon>
+            </button>
+            <a
+              class="icon-btn"
+              [routerLink]="['/profile', row.author.username]"
+              aria-label="View profile"
+            >
+              <iconify-icon
+                icon="mdi:account-circle"
+                class="icon-btn-glyph"
+                aria-hidden="true"
+              ></iconify-icon>
+            </a>
+          </div>
+
+          <p class="likes-line">
+            <strong>{{ row.post.likes | number }}</strong> likes
+          </p>
+
+          <p class="caption">
+            <a [routerLink]="['/profile', row.author.username]">{{
+              row.author.username
+            }}</a>
+            <span> {{ row.post.caption }}</span>
+          </p>
+
+          <ul class="comments" *ngIf="row.comments.length">
+            <li *ngFor="let item of row.comments">
+              <a [routerLink]="['/profile', item.author.username]">{{
+                item.author.username
+              }}</a>
+              <span> {{ item.c.text }}</span>
+            </li>
+          </ul>
+
+          <div class="comment-box">
+            <input
+              type="text"
+              class="comment-input"
+              [placeholder]="'Add a comment as ' + (current?.username ?? '')"
+              [(ngModel)]="commentDraft[row.post.id]"
+              [disabled]="isCommentPending(row.post.id)"
+              (input)="clearPostFeedback(row.post.id)"
+              (keydown.enter)="submitComment(row); $event.preventDefault()"
+            />
+            <button
+              type="button"
+              class="post-comment-btn"
+              [disabled]="isCommentPending(row.post.id)"
+              (click)="submitComment(row)"
+            >
+              {{ isCommentPending(row.post.id) ? 'Posting...' : 'Post' }}
+            </button>
+          </div>
+
+          <p class="post-feedback" *ngIf="postFeedback[row.post.id]">
+            {{ postFeedback[row.post.id] }}
+          </p>
         </div>
-      </div>
-      <div class="post-content">
-        <img
-          src="https://via.placeholder.com/600x400/3357FF/FFFFFF"
-          alt="Post Image"
-          class="post-image"
-        />
-        <p class="post-caption">Weekend hiking adventures 🏔️</p>
-      </div>
-    </div>
+      </article>
+    </section>
 
-    <div class="post">
-      <div class="post-header">
-        <img
-          src="https://via.placeholder.com/50/FF33A1/FFFFFF"
-          alt="User Avatar"
-          class="avatar"
-        />
-        <div class="post-info">
-          <h3 class="username">Sarah Lee</h3>
-          <span class="post-time">1 day ago</span>
+    <aside class="side" aria-label="Suggestions">
+      <div class="side-card">
+        <div class="side-me" *ngIf="current">
+          <img
+            class="avatar md"
+            [src]="avatar(current)"
+            [alt]="current.username"
+            width="44"
+            height="44"
+          />
+          <div>
+            <a class="side-username" routerLink="/profile">{{
+              current.username
+            }}</a>
+            <p class="side-sub">{{ current.name }}</p>
+          </div>
         </div>
-      </div>
-      <div class="post-content">
-        <img
-          src="https://via.placeholder.com/600x400/FF33A1/FFFFFF"
-          alt="Post Image"
-          class="post-image"
-        />
-        <p class="post-caption">My new setup is finally complete!</p>
-      </div>
-    </div>
 
-    <div class="post">
-      <div class="post-header">
-        <img
-          src="https://via.placeholder.com/50/33FFF6/000000"
-          alt="User Avatar"
-          class="avatar"
-        />
-        <div class="post-info">
-          <h3 class="username">Tom Brown</h3>
-          <span class="post-time">2 days ago</span>
+        <h2 class="side-heading">Suggestions for you</h2>
+
+        <p class="side-error" *ngIf="followError">{{ followError }}</p>
+
+        <div class="suggestion" *ngFor="let user of suggestions">
+          <img
+            class="avatar sm"
+            [src]="avatar(user)"
+            [alt]="user.username"
+            width="36"
+            height="36"
+          />
+          <div class="suggestion-meta">
+            <a [routerLink]="['/profile', user.username]">{{ user.username }}</a>
+            <span>{{ user.name }}</span>
+          </div>
+          <button
+            type="button"
+            class="follow-btn"
+            [disabled]="isFollowingSuggestion(user.id)"
+            (click)="followSuggestion(user)"
+          >
+            {{ isFollowingSuggestion(user.id) ? 'Following...' : 'Follow' }}
+          </button>
         </div>
-      </div>
-      <div class="post-content">
-        <img
-          src="https://via.placeholder.com/600x400/33FFF6/000000"
-          alt="Post Image"
-          class="post-image"
-        />
-        <p class="post-caption">Exploring the city.</p>
-      </div>
-    </div>
 
-    <div class="post">
-      <div class="post-header">
-        <img
-          src="https://via.placeholder.com/50/F6FF33/000000"
-          alt="User Avatar"
-          class="avatar"
-        />
-        <div class="post-info">
-          <h3 class="username">Emily White</h3>
-          <span class="post-time">2 days ago</span>
-        </div>
+        <p class="side-foot" *ngIf="!suggestions.length && !loading">
+          You're following everyone in the demo dataset.
+        </p>
       </div>
-      <div class="post-content">
-        <img
-          src="https://via.placeholder.com/600x400/F6FF33/000000"
-          alt="Post Image"
-          class="post-image"
-        />
-        <p class="post-caption">Delicious homemade pasta 🍝</p>
-      </div>
-    </div>
-  </main>
-
-  <aside class="suggestions">
-    <h3>Who to follow</h3>
-
-    <div class="suggestion-profile" *ngFor="let user of users">
-      <img [src]="user.profileImage" alt="User Avatar" class="avatar" />
-      <div class="suggestion-info">
-        <span class="username">{{ user.username }}</span>
-        <span class="sub-text">{{ user.email }}</span>
-      </div>
-      <button class="follow-btn">Follow</button>
-    </div>
-  </aside>
+    </aside>
+  </div>
 </div>
