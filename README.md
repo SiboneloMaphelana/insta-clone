@@ -27,7 +27,7 @@ The app uses **JSON Server** as a fake REST API backed by `db.json`, so you can 
    npm install
    ```
 
-2. **Start the API** (must be running before you use the app; the client expects `http://localhost:3000` — see `src/app/core/api.config.ts`)
+2. **Start the API** (must be running before you use the app; the dev client uses `http://localhost:3000` from `src/environments/environment.ts`)
 
    ```bash
    npm run server
@@ -58,14 +58,17 @@ Registering through the UI adds new users to the database file while JSON Server
 | Script | Description |
 |--------|-------------|
 | `npm start` | Dev server (`ng serve`) at port 4200 |
-| `npm run build` | Production build (`ng build`) |
+| `npm run build` | Production build (`ng build`; optional `API_BASE_URL` overwrites prod API URL — see below) |
+| `npm run server:railway` | JSON Server with CORS and `PORT` (for Railway / production-like hosts) |
 | `npm run watch` | Development build in watch mode |
 | `npm test` | Unit tests (Karma + Jasmine) |
 | `npm run server` | JSON Server watching `db.json` on port 3000 |
 
 ## Configuration
 
-- **API base URL**: `src/app/core/api.config.ts` (`API_BASE_URL`).
+- **API base URL**: `src/environments/environment.ts` (development) and `environment.prod.ts` (production builds). `src/app/core/api.config.ts` re-exports this as `API_BASE_URL`.
+- **Railway / CI**: Set environment variable **`API_BASE_URL`** to your public API origin (no trailing slash), e.g. `https://your-api.up.railway.app`. The `npm run build` script runs `scripts/write-env-prod.cjs` first; if `API_BASE_URL` is set, it rewrites `environment.prod.ts` before `ng build`.
+- **API service start command on Railway**: `npm ci && npm run server:railway` (root directory = repo root so `db.json` is found).
 - **Angular project**: `hanami` in `angular.json` (build output `dist/hanami`).
 
 ## Project layout (high level)
