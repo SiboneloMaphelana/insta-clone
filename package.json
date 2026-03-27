@@ -7,10 +7,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "node scripts/write-env-prod.cjs && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "server": "json-server --watch db.json"
+    "server": "json-server --watch db.json",
+    "server:prod": "node scripts/json-server-prod.cjs"
   },
   "private": true,
   "dependencies": {
