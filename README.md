@@ -91,32 +91,14 @@ This repo includes [`render.yaml`](render.yaml): a **Node** web service for the 
 4. Wait for both deploys to finish. Open the **hanami-web** URL (e.g. `https://hanami-web.onrender.com`). If the UI cannot reach the API, open **hanami-api → Logs** and confirm it is listening; then in **hanami-web → Environment**, set **`API_BASE_URL`** to the **exact** API URL shown in the dashboard (no trailing slash), and trigger **Manual Deploy → Clear build cache & deploy**.
 5. If you **rename** `hanami-api`, update **`API_BASE_URL`** on `hanami-web` to match the new public API origin and redeploy the static site.
 
-### Option 2 — Docker API + any static host
+**Seeing JSON Server’s endpoint list instead of the Angular UI?** That page is served by **hanami-api** (the fake REST API). The app UI lives on the **static site**: open **`hanami-web`** in the dashboard and use **its** URL (e.g. `https://hanami-web.onrender.com`), not the API URL. The two services always have **different** `.onrender.com` addresses.
 
-Run only the API in a container; build and host the SPA elsewhere (Netlify, Cloudflare Pages, S3, etc.).
+### Option 2 — Manual (no Blueprint)
 
-1. Build and run locally to verify:
-
-   ```bash
-   docker build -t hanami-api .
-   docker run --rm -p 3000:3000 -e PORT=3000 hanami-api
-   ```
-
-2. Deploy the same image to **Fly.io**, **Railway**, **Google Cloud Run** (with a long enough request timeout), or a VPS, exposing **`PORT`** and a public HTTPS URL.
-3. On your machine or in CI, set **`API_BASE_URL`** to that public origin and build the frontend:
-
-   ```bash
-   npm ci
-   export API_BASE_URL=https://your-api.example.com   # no trailing slash
-   npm run build
-   ```
-
-4. Upload **`dist/hanami/**`** to your static host. Configure **SPA fallback**: every path should serve **`index.html`** (so `/login`, `/home`, etc. work on refresh).
-
-### Option 3 — Manual (no Blueprint / no Docker)
+On any host that runs Node (no container required):
 
 1. Create a **Web Service** with **Node**, root directory = repo root, **build** `npm ci`, **start** `npm run server:prod`. Save the HTTPS API origin.
-2. Build the app with **`API_BASE_URL`** set (same as `npm run build` flow above) and deploy **`dist/hanami`** to static hosting with SPA fallback.
+2. On your machine or in CI, set **`API_BASE_URL`** to that API origin (no trailing slash), run **`npm ci`** and **`npm run build`**, then deploy **`dist/hanami`** to static hosting (Netlify, Cloudflare Pages, S3, etc.). Configure **SPA fallback** so every path serves **`index.html`** (so `/login`, `/home`, etc. work on refresh).
 
 ### Verify a production build locally
 
@@ -150,7 +132,6 @@ src/app/
   pipes/          # e.g. relative time
 db.json           # JSON Server data (demo users & posts)
 render.yaml       # Render Blueprint (API web service + static site)
-Dockerfile        # API-only container image
 ```
 
 ## Build
